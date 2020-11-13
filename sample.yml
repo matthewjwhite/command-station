@@ -1,0 +1,7 @@
+---
+- name: Where am I
+  command: pwd
+- name: Who am I
+  command: whoami
+- name: Hi Google
+  command: ping -c 5 google.com
