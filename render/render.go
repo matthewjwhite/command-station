@@ -12,12 +12,48 @@ type renderData struct {
 }
 
 const stationHTML = `
-<link href="https://kristopolous.github.io/BOOTSTRA.386/assets/css/bootstrap.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> 
+<style>
+* {
+  font-family: vt323;
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+body {
+  background: black;
+}
+
+h1 {
+  color: #00ff1a;
+  font-size: 50px;
+}
+
+a {
+  background: grey;
+  padding: 20px 20px;
+  text-decoration: none;
+  color: black;
+  box-shadow: 5px 5px #3b453c;
+  margin: 15px;
+}
+
+a:active {
+  padding: 18px 18px;
+  box-shadow: 3px 3px #3b453c;
+}
+
+a:hover {
+  background:#34eb4c;
+}
+</style>
 <center>
-<div class="page-header">ALL HANDS MAN YOUR BATTLE STATIONS</div>
+<h1>ALL HANDS MAN YOUR BATTLE STATIONS</h1>
+<br>
 {{- $endpoint := .Endpoint -}}
 {{ range .Commands }}
-    <a class="btn btn-primary btn-large" href="/{{ $endpoint }}/{{.Name}}">{{.Name}}</a>
+    <a href="/{{ $endpoint }}/{{.Name}}">{{.Name}}</a>
 {{ end }}
 </center>
 `
