@@ -4,6 +4,8 @@ A command station for the common nerd.
 
 Create buttons for shell commands/tasks and trigger them from a no-frills web UI.
 
+![Demo](doc/demo.png)
+
 ## Usage
 
 ```bash

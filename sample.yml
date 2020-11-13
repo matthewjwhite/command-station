@@ -1,7 +1,7 @@
 ---
-- name: Where am I
-  command: pwd
-- name: Who am I
-  command: whoami
-- name: Hi Google
-  command: ping -c 5 google.com
+- name: Unleash Arsenal
+  command: ping -c 5 asdf.com
+- name: Leave No Trace
+  command: rm -rf /tmp/a-directory
+- name: Stop Attack
+  command: python -m SimpleHTTPServer 8000
