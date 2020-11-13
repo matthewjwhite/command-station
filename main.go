@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 const (
@@ -38,10 +39,12 @@ func main() {
 }
 
 func launchServer(config config.Config) {
-	router := mux.NewRouter()
+	var handler http.Handler
+
+	handler = mux.NewRouter()
 
 	// Base command station.
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	handler.(*mux.Router).HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		data, err := render.Station(config, commandEndpoint)
 		if err != nil {
@@ -51,7 +54,7 @@ func launchServer(config config.Config) {
 	})
 
 	// Command endpoint.
-	router.HandleFunc("/"+commandEndpoint+"/{command}", func(w http.ResponseWriter, r *http.Request) {
+	handler.(*mux.Router).HandleFunc("/"+commandEndpoint+"/{command}", func(w http.ResponseWriter, r *http.Request) {
 		cmd, err := command.Collection(config.Commands).Get(mux.Vars(r)["command"])
 		if errors.Is(err, command.ErrUnknown) {
 			http.Error(w, "Command does not exist!", http.StatusInternalServerError)
@@ -64,5 +67,9 @@ func launchServer(config config.Config) {
 		w.Write(out)
 	})
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	if config.Timeout != 0 {
+		handler = http.TimeoutHandler(handler, time.Second*time.Duration(config.Timeout), "Operation timed out")
+	}
+
+	log.Fatal(http.ListenAndServe(":8000", handler))
 }

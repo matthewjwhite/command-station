@@ -9,6 +9,7 @@ import (
 // Config contains the configuration parameters for rendering the command station.
 type Config struct {
 	Title    string
+	Timeout  int `yaml:"timeout,omitempty"`
 	Commands []command.Command
 }
 

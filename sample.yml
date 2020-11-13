@@ -1,8 +1,9 @@
 ---
 title: 'All Hands Man Your Battle Stations'
+timeout: 2
 commands:
 - name: Unleash Arsenal
-  command: ping -c 5 asdf.com
+  command: ping -c 1 asdf.com
 - name: Leave No Trace
   command: rm -rf /tmp/a-directory
 - name: Stop Attack
