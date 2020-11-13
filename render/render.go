@@ -2,13 +2,13 @@ package render
 
 import (
 	"bytes"
-	"github.com/matthewjwhite/command-station/command"
+	"github.com/matthewjwhite/command-station/config"
 	"text/template"
 )
 
 type renderData struct {
 	Endpoint string
-	Commands []command.Command
+	Config   config.Config
 }
 
 const stationHTML = `
@@ -49,24 +49,24 @@ a:hover {
 }
 </style>
 <center>
-<h1>ALL HANDS MAN YOUR BATTLE STATIONS</h1>
+<h1>{{ .Config.Title }}</h1>
 <br>
 {{- $endpoint := .Endpoint -}}
-{{ range .Commands }}
+{{ range .Config.Commands }}
     <a href="/{{ $endpoint }}/{{.Name}}">{{.Name}}</a>
 {{ end }}
 </center>
 `
 
 // Station evaluates the final station code and writes it to the provided writer.
-func Station(commands []command.Command, endpoint string) ([]byte, error) {
+func Station(config config.Config, endpoint string) ([]byte, error) {
 	t, err := template.New("station").Parse(stationHTML)
 	if err != nil {
 		return nil, err
 	}
 
 	var buffer bytes.Buffer
-	if err = t.Execute(&buffer, renderData{endpoint, commands}); err != nil {
+	if err = t.Execute(&buffer, renderData{endpoint, config}); err != nil {
 		return nil, err
 	}
 

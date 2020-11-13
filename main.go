@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gorilla/mux"
 	"github.com/matthewjwhite/command-station/command"
+	"github.com/matthewjwhite/command-station/config"
 	"github.com/matthewjwhite/command-station/render"
 	"log"
 	"net/http"
@@ -27,22 +28,22 @@ func main() {
 		log.Fatalf("Failed to open command file: %v", err)
 	}
 
-	commands, err := command.Commands(file)
+	config, err := config.Parse(file)
 	if err != nil {
 		log.Fatalf("Failed to parse command file: %v", err)
 	}
 	file.Close()
 
-	launchServer(commands)
+	launchServer(config)
 }
 
-func launchServer(commands []command.Command) {
+func launchServer(config config.Config) {
 	router := mux.NewRouter()
 
 	// Base command station.
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
-		data, err := render.Station(commands, commandEndpoint)
+		data, err := render.Station(config, commandEndpoint)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -51,7 +52,7 @@ func launchServer(commands []command.Command) {
 
 	// Command endpoint.
 	router.HandleFunc("/"+commandEndpoint+"/{command}", func(w http.ResponseWriter, r *http.Request) {
-		cmd, err := command.Collection(commands).Get(mux.Vars(r)["command"])
+		cmd, err := command.Collection(config.Commands).Get(mux.Vars(r)["command"])
 		if errors.Is(err, command.ErrUnknown) {
 			http.Error(w, "Command does not exist!", http.StatusInternalServerError)
 		}

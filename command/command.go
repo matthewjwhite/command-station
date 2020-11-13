@@ -2,8 +2,6 @@ package command
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
-	"io"
 	"os/exec"
 )
 
@@ -27,20 +25,6 @@ func (c Command) Execute() ([]byte, error) {
 	}
 
 	return combined, nil
-}
-
-// Commands returns a slice of Commands, given a Reader with YAML data.
-// io.Reader selected for simplified, common live and test use (tests can
-// can mock an io.Reader, live can use os.Open).
-func Commands(reader io.Reader) ([]Command, error) {
-	var commands []Command
-
-	decoder := yaml.NewDecoder(reader)
-	if err := decoder.Decode(&commands); err != nil {
-		return nil, err
-	}
-
-	return commands, nil
 }
 
 // Collection is an alias for []Command, allowing us to apply methods to a Command collection.
