@@ -1,5 +1,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
 <style>
 * {
   font-family: vt323;
@@ -33,12 +34,40 @@ a:active {
 a:hover {
   background:#34eb4c;
 }
+
+#output {
+  background: blue;
+  color: white;
+  margin: 30px;
+  height: 50%;
+  overflow: scroll;
+}
 </style>
-<center>
-<h1>{{ .Config.Title }}</h1>
-<br>
+
 {{- $endpoint := .Endpoint -}}
+
+<script>
+function callCommand(name) {
+  fetch('/{{ $endpoint }}/' + name).then(function(response) {
+    return response.text().then(function(text) {
+      document.querySelector("#output").innerText = text
+    })
+  })
+}
+</script>
+
+<center>
+
+<h1>{{ .Config.Title }}</h1>
+
+</br>
+<div>
 {{ range .Config.Commands }}
-    <a href="/{{ $endpoint }}/{{.Name}}">{{.Name}}</a>
+    <a onclick="callCommand('{{.Name}}')" href="javascript:void(0);">{{.Name}}</a>
 {{ end }}
+</div>
+</br>
+
+<div id="output"></div>
+
 </center>
