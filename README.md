@@ -8,10 +8,22 @@ Create buttons for shell commands/tasks and trigger them from a no-frills web UI
 
 ## Usage
 
+### Standalone
+
 ```bash
 git clone https://github.com/matthewjwhite/command-station && cd command-station
 go build .
 ./command-station sample.yml # Button created for each command.
 ```
 
-Now, navigate to `http://127.0.0.1:8000`.
+Navigate to `http://127.0.0.1:8000`.
+
+### Docker
+
+```bash
+git clone https://github.com/matthewjwhite/command-station && cd command-station
+docker build -t command-station .
+docker run -it -v "$PWD/sample.yml:/sample.yml" -p 8000:8000 command-station /sample.yml
+```
+
+Navigate to `http://127.0.0.1:8000`.
