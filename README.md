@@ -12,6 +12,9 @@ Create buttons for shell commands/tasks and trigger them from a no-frills web UI
 
 ```bash
 git clone https://github.com/matthewjwhite/command-station && cd command-station
+go get -u github.com/go-bindata/go-bindata/... && \
+  mkdir asset && \
+  go-bindata -o asset/bindata.go --pkg asset template/...
 go build .
 ./command-station sample.yml # Button created for each command.
 ```
