@@ -15,6 +15,8 @@ body {
 h1 {
   color: #00ff1a;
   font-size: 50px;
+  text-align: center;
+  margin: 20px -20px;
 }
 
 a {
@@ -41,6 +43,11 @@ a:hover {
   margin: 30px;
   height: 50%;
   overflow: scroll;
+  padding: 10px 15px;
+}
+
+#bar {
+  text-align: center;
 }
 </style>
 
@@ -56,18 +63,15 @@ function callCommand(name) {
 }
 </script>
 
-<center>
-
 <h1>{{ .Config.Title }}</h1>
 
 </br>
-<div>
+<div id="bar">
 {{ range .Config.Commands }}
     <a onclick="callCommand('{{.Name}}')" href="javascript:void(0);">{{.Name}}</a>
 {{ end }}
 </div>
 </br>
 
-<div id="output"></div>
-
-</center>
+<div id="output">
+</div>
